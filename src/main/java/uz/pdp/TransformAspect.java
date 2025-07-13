@@ -6,15 +6,15 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
 @EnableAspectJAutoProxy
-public class ApplicationConfig {
+public class TransformAspect {
 
     @Bean
-    public Performance performance() {
-        return new Performance();
+    public Transform transform(){
+        return new Transform();
     }
 
     @Bean
-    public Audience audience() {
+    public Audience audience(){
         return new Audience();
     }
 }

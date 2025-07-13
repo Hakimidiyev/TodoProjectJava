@@ -8,8 +8,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  */
 public class MainJavaAop {
     public static void main( String[] args ){
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
-        Performance performance = context.getBean(Performance.class);
-        performance.perform();
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(TransformAspect.class);
+        Transform transform = context.getBean(Transform.class);
+        transform.start();
     }
 }
