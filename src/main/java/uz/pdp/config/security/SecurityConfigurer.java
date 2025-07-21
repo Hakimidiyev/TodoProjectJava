@@ -45,8 +45,8 @@ public class SecurityConfigurer {
                 .failureHandler(authenticationFailureHandler);
 
         http.logout()
-                .deleteCookies("JSESSIONID")
                 .logoutUrl("/auth/logout")
+                .deleteCookies("JSESSIONID")
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout","POST"));
 
