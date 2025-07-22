@@ -1,5 +1,6 @@
 package uz.pdp.domains;
 
+
 import lombok.*;
 
 import java.util.List;
@@ -10,10 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ToString
-public class AuthUser {
+public class AuthRole {
     private Long id;
-    private String username;
-    private String password;
-    private List<AuthRole>roles;
+    private String name;
+    private String code;
 
+    private List<AuthPermission>permissions;
 }

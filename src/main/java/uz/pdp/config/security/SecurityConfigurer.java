@@ -2,6 +2,7 @@ package uz.pdp.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,8 +12,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(
+        securedEnabled = true,
+        jsr250Enabled = true
+)
 public class SecurityConfigurer {
 
+    public static final String[] WHITE_LIST = {"/css/**", "/auth/login", "/auth/register"};
     private final CustomUserDetailsService userDetailsService;
     private final CustomAuthenticationFailureHandler authenticationFailureHandler;
 
@@ -26,9 +32,9 @@ public class SecurityConfigurer {
         http.csrf().disable();
         http.userDetailsService(userDetailsService);
         http.authorizeHttpRequests()
-                .requestMatchers( "/css/**", "/auth/login","/auth/register").permitAll()
+                .requestMatchers(WHITE_LIST).permitAll()
                 .requestMatchers("/admin").hasRole("ADMIN")
-                .requestMatchers("/user").hasRole("USER")
+                .requestMatchers("/user").hasAnyRole("USER","ADMIN")
                 .anyRequest()
                 .fullyAuthenticated();
 

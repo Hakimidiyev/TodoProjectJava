@@ -1,7 +1,6 @@
 package uz.pdp.daos;
 
 import lombok.NonNull;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -22,8 +21,7 @@ public class AuthUserDao {
         var sql = "insert into authuser(username,password,role) values(:username,:password,:role)";
         var paramSource= new MapSqlParameterSource()
         .addValue("username",authUser.getUsername())
-        .addValue("password",authUser.getPassword())
-        .addValue("role",authUser.getRole());
+        .addValue("password",authUser.getPassword());
         var keyHolder=new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql,paramSource,keyHolder,new String[]{"id"});
         return (Long)keyHolder.getKeys().get("id");
