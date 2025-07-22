@@ -25,7 +25,7 @@ public class SecurityConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.userDetailsService(userDetailsService);
-        http.authorizeRequests()
+        http.authorizeHttpRequests()
                 .requestMatchers( "/css/**", "/auth/login","/auth/register").permitAll()
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .requestMatchers("/user").hasRole("USER")
