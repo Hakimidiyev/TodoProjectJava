@@ -13,10 +13,7 @@ import uz.pdp.daos.AuthUserDao;
 import uz.pdp.domains.AuthPermission;
 import uz.pdp.domains.AuthRole;
 import uz.pdp.domains.AuthUser;
-
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
