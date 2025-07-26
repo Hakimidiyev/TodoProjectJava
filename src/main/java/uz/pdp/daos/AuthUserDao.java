@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Component;
 import uz.pdp.domains.AuthUser;
+
 import java.util.Optional;
 
 @Component
@@ -18,13 +19,13 @@ public class AuthUserDao {
     }
 
     public Long save(@NonNull AuthUser authUser) {
-        var sql = "insert into authuser(username,password,role) values(:username,:password,:role)";
-        var paramSource= new MapSqlParameterSource()
-        .addValue("username",authUser.getUsername())
-        .addValue("password",authUser.getPassword());
-        var keyHolder=new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(sql,paramSource,keyHolder,new String[]{"id"});
-        return (Long)keyHolder.getKeys().get("id");
+        var sql = "insert into authuser(username,password) values(:username,:password)";
+        var paramSource = new MapSqlParameterSource()
+                .addValue("username", authUser.getUsername())
+                .addValue("password", authUser.getPassword());
+        var keyHolder = new GeneratedKeyHolder();
+        namedParameterJdbcTemplate.update(sql, paramSource, keyHolder, new String[]{"id"});
+        return (Long) keyHolder.getKeys().get("id");
     }
 
     public Optional<AuthUser> findByUsername(@NonNull String username) {

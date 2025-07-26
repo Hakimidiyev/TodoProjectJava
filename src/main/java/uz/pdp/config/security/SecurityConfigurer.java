@@ -18,7 +18,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 )
 public class SecurityConfigurer {
 
-    public static final String[] WHITE_LIST = {"/css/**", "/auth/login", "/auth/register"};
+    public static final String[] WHITE_LIST = {"/css/**",
+            "/auth/login",
+            "/home",
+            "/auth/register"};
     private final CustomUserDetailsService userDetailsService;
     private final CustomAuthenticationFailureHandler authenticationFailureHandler;
 
