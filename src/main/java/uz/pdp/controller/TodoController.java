@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import uz.pdp.dao.TodoDao;
-import uz.pdp.details.Todo;
+import uz.pdp.daos.TodoDao;
+import uz.pdp.domains.Todo;
 import uz.pdp.service.TodoService;
 
 import java.time.LocalDateTime;
