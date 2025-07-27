@@ -18,6 +18,9 @@ public class CustomUserDetails implements UserDetails {
         this.authUser = authUser;
     }
 
+    public AuthUser getAuthUser() {          // <--- SHU GETTERNI QO‘SHING
+        return authUser;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

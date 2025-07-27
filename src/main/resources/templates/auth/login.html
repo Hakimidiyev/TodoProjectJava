@@ -15,11 +15,12 @@
                 <span th:text="${errorMessage}"></span>
             </div>
             <form method="post"  action="/auth/login">
+                <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username" name="uname">
                 </div>
-                <div class="mb-3">
+                <div class"mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" name="pswd">
                 </div>
