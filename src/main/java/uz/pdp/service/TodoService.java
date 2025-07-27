@@ -22,7 +22,7 @@ public class TodoService {
 
     public Todo addTodo(Todo todo,String userName) {
         AuthUser authUser = authUserDao.findByUsername(userName).orElseThrow(() -> new UsernameNotFoundException("user not found"));
-        todo.setAuthUsers(authUser);
+        todo.setAuthUser(authUser);
         todo.setCreated_at(LocalDateTime.now());
         todoDao.save(todo);
         return todo;
@@ -41,7 +41,7 @@ public class TodoService {
     }
     public void delete(Todo todo,String username){
         AuthUser user = authUserDao.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("user not found"));
-        if (!(user.getId().equals(todo.getAuthUsers().getId()))) {
+        if (!(user.getId().equals(todo.getAuthUser().getId()))) {
             throw new RuntimeException("user not update");
         }
         todoDao.update(todo);

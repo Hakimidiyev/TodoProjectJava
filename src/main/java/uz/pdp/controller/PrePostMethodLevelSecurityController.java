@@ -31,13 +31,13 @@ public class PrePostMethodLevelSecurityController {
     }
 
     @GetMapping("/delete_manager_page")
-    @PreAuthorize("hasAuthority(T(uz.pdp.config.security.Permissions).HAS_PERMISSION_DELETE_MANAGER)")
+    @PreAuthorize("hasAuthority(T(uz.pdp.config.security.Permissions).HAS_DELETE_MANAGER)")
     public String deleteManagerPage(){
         return "deleteManager page";
     }
 
     @GetMapping("/block_user_delete_manager")
-    @PreAuthorize("hasAnyAuthority('DELETE_MANAGER','BLOCK_USER')")
+    @PreAuthorize("hasAnyAuthority(T(uz.pdp.config.security.Permissions).HAS_BLOCK_USER,T(uz.pdp.config.security.Permissions).HAS_DELETE_MANAGER)")
     public String manageManagePage(){
         return "block_user_delete_manager page";
     }

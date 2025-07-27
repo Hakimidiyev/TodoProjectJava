@@ -14,7 +14,7 @@ public class Todo {
     private Long id;
     private String title;
     private Integer priority;
-    private List<AuthUser> authUser;
+    private AuthUser authUser;
     private LocalDateTime created_at;
 
 
