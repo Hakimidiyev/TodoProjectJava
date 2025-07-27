@@ -16,6 +16,7 @@ public class HomeController {
         modelAndView.addObject("username","Hakim");
         return modelAndView;
     }
+
     @GetMapping("/admin")
     @ResponseBody
     public String admin(){
@@ -31,6 +32,6 @@ public class HomeController {
     @PostMapping("/csrf/test")
     public String csrfTest(){
         System.out.println("Request accepted successfully");
-        return "redirect:/home";
+        return "redirect:/todo";
     }
 }

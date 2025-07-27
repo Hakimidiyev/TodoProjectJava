@@ -18,10 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 )
 public class SecurityConfigurer {
 
-    public static final String[] WHITE_LIST = {"/css/**",
-            "/auth/login",
-            "/home",
-            "/auth/register"};
+    public static final String[] WHITE_LIST = {"/css/**","/auth/login","/todo","/auth/register"};
     private final CustomUserDetailsService userDetailsService;
     private final CustomAuthenticationFailureHandler authenticationFailureHandler;
 
@@ -44,7 +41,7 @@ public class SecurityConfigurer {
                 .loginPage("/auth/login")
                 .usernameParameter("uname")
                 .passwordParameter("pswd")
-                .defaultSuccessUrl("/home",false)
+                .defaultSuccessUrl("/todo/list", true)
                 .failureHandler(authenticationFailureHandler);
 
         http.logout()

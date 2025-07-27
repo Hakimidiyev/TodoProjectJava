@@ -164,3 +164,5 @@ fabric.properties
 /.idea/vcs.xml
 /.idea/artifacts/springframeworkcore_Web2_exploded.xml
 /.idea/artifacts/unnamed.xml
+/.idea/dataSources.xml
+/src/main/resources/templates/todo.html

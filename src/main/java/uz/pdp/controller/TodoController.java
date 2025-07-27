@@ -1,47 +1,52 @@
 package uz.pdp.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import uz.pdp.config.security.SessionUser;
 import uz.pdp.daos.TodoDao;
-import uz.pdp.domains.Todo;
+import uz.pdp.dto.todo.TodoCreateDto;
+import uz.pdp.dto.todo.TodoUpdateDto;
 import uz.pdp.service.TodoService;
-
-import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/todo")
 public class TodoController {
+    private final TodoDao todoDao;
+    private final TodoService todoService;
+    private final SessionUser sessionUser;
 
     @Autowired
-     TodoDao todoDao;
-    TodoService todoService;
+    public TodoController(TodoDao todoDao, TodoService todoService, SessionUser sessionUser) {
+        this.todoDao = todoDao;
+        this.todoService = todoService;
+        this.sessionUser = sessionUser;
+    }
 
 
     @GetMapping("/list")
     public String getAllTodos(Model model) {
-        model.addAttribute("list", todoDao.findByAll());
-        return "redirect:/todo/list";
+        Long userId = sessionUser.getId();
+        model.addAttribute("list", todoDao.findAllByUserId(userId));
+        return "todo";
     }
 
     @PostMapping("/update")
-    public String updateTodo(@ModelAttribute Todo todo,String username) {
-        todoService.updateTodo(todo,username);
+    public String updateTodo(@ModelAttribute TodoUpdateDto todo) {
+       todoService.updateTodo(todo);
         return "redirect:/todo/list";
     }
 
     @PostMapping("/add")
-    public String addTodo(@ModelAttribute Todo todo) {
-        todo.setCreated_at(LocalDateTime.now());
-        todoDao.save(todo);
+    public String add(@ModelAttribute TodoCreateDto todo) {
+        todoService.addTodo(todo);
         return "redirect:/todo/list";
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
-        todoDao.delete(id);
+        todoService.delete(id);
         return "redirect:/todo/list";
     }
 }

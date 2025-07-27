@@ -1,49 +1,58 @@
 package uz.pdp.service;
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import uz.pdp.daos.AuthUserDao;
+import uz.pdp.config.security.SessionUser;
 import uz.pdp.daos.TodoDao;
-import uz.pdp.domains.AuthUser;
 import uz.pdp.domains.Todo;
-import java.time.LocalDateTime;
-import java.util.Optional;
+import uz.pdp.dto.todo.TodoCreateDto;
+import uz.pdp.dto.todo.TodoUpdateDto;
+
+import java.util.List;
+
 
 @Service
 public class TodoService {
 
     private final TodoDao todoDao;
-    private final AuthUserDao authUserDao;
+    private final SessionUser sessionUser;
 
-    public TodoService(TodoDao todoDao, AuthUserDao authUserDao) {
+    public TodoService(TodoDao todoDao, SessionUser sessionUser) {
         this.todoDao = todoDao;
-        this.authUserDao = authUserDao;
+        this.sessionUser = sessionUser;
     }
 
-    public Todo addTodo(Todo todo,String userName) {
-        AuthUser authUser = authUserDao.findByUsername(userName).orElseThrow(() -> new UsernameNotFoundException("user not found"));
-        todo.setAuthUser(authUser);
-        todo.setCreated_at(LocalDateTime.now());
+    public void addTodo(TodoCreateDto dto) {
+        long userId = sessionUser.getId();
+        Todo todo = new Todo(dto.title(), dto.priority(), userId);
         todoDao.save(todo);
-        return todo;
     }
 
-    public Optional<Todo> getAllTodo(String username){
-        AuthUser user = authUserDao.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("user not found"));
-        return todoDao.findByUserId(user.getId());
+    public List<Todo> getAll() {
+        return todoDao.findAllByUserId(sessionUser.getUser().getId());
     }
-    public void updateTodo(Todo todo,String username){
-        AuthUser user = authUserDao.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("user not found"));
-        if (!(user.getId().equals(todo.getAuthUser().getId()))) {
-            throw new RuntimeException("user not update");
+
+    public void updateTodo(TodoUpdateDto dto) {
+        long userId = sessionUser.getId();
+        long todoId = dto.id();
+        Todo todo = todoDao.findById(todoId);
+        if (!todo.getUserId().equals(userId)) {
+            throw new IllegalArgumentException("user can not update");
         }
+        todo.setId(dto.id());
+        todo.setTitle(dto.title());
+        todo.setPriority(dto.priority());
         todoDao.update(todo);
     }
-    public void delete(Todo todo,String username){
-        AuthUser user = authUserDao.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("user not found"));
-        if (!(user.getId().equals(todo.getAuthUser().getId()))) {
-            throw new RuntimeException("user not update");
+
+    public void delete(Long todoId) {
+        long userId = sessionUser.getId();
+        Todo todo = todoDao.findById(todoId);
+        if (todo == null) {
+            throw new IllegalArgumentException("todo is null");
         }
-        todoDao.update(todo);
+        if (!todo.getUserId().equals(userId)) {
+            throw new IllegalArgumentException("user can not update");
+        }
+        todoDao.delete(todoId);
     }
 }
