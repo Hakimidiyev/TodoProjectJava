@@ -23,6 +23,7 @@ public class AuthService {
 //        if (exists)
 //            throw new IllegalArgumentException();
 
+
         AuthUser user = AuthUser.builder()
                 .username(dto.username())
                 .password(passwordEncoder.encode(dto.password()))

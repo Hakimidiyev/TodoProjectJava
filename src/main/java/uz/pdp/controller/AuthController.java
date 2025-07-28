@@ -6,8 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import uz.pdp.daos.AuthUserDao;
-import uz.pdp.domains.AuthUser;
 import uz.pdp.dto.UserRegisterDto;
+import uz.pdp.service.AuthService;
 
 @Controller
 @RequestMapping("/auth")
@@ -15,10 +15,12 @@ public class AuthController {
 
     private final AuthUserDao authUserDao;
     private final PasswordEncoder passwordEncoder;
+    private final AuthService authService;
 
-    public AuthController(AuthUserDao authUserDao, PasswordEncoder passwordEncoder) {
+    public AuthController(AuthUserDao authUserDao, PasswordEncoder passwordEncoder, AuthService authService) {
         this.authUserDao = authUserDao;
         this.passwordEncoder = passwordEncoder;
+        this.authService = authService;
     }
 
     @GetMapping("/login")
@@ -41,12 +43,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute UserRegisterDto dto){
-        AuthUser authUser = AuthUser.builder()
-                .username(dto.username())
-                .password(passwordEncoder.encode(dto.password()))
-                .build();
-        Long id = authUserDao.save(authUser);
-        System.out.println(id);
+
+        authService.register(dto);
         return "redirect:/auth/login";
     }
 }
