@@ -1,3 +1,5 @@
 package uz.pdp.dto;
 
-public record UserRegisterDto(String username,String password){}
+import org.springframework.web.multipart.MultipartFile;
+
+public record UserRegisterDto(String username, String password, MultipartFile photo){}
