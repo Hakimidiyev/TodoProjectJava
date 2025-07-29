@@ -21,14 +21,12 @@ import java.util.UUID;
 @Controller
 public class UploadController {
 
-    private final Path rootPath="home/hakim/Desktop/files/upload";
+    private final Path rootPath= Path.of("/home/hakim/Desktop/files/upload");
     private final UploadsDao uploadsDao;
 
     public UploadController(UploadsDao uploadsDao) {
         this.uploadsDao = uploadsDao;
     }
-
-
 
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file") MultipartFile file)throws IOException {
