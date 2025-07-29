@@ -29,9 +29,10 @@ public class SecurityConfigurer {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.userDetailsService(userDetailsService);
+
         http.authorizeHttpRequests()
                 .requestMatchers(WHITE_LIST).permitAll()
+                .requestMatchers("/download/**").permitAll()
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .requestMatchers("/user").hasAnyRole("USER","ADMIN")
                 .anyRequest()

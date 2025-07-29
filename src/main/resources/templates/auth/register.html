@@ -1,35 +1,42 @@
+<!--/* @thymesVar id="authUser" type="uz.pdp.config.security.CustomUserDetails" */-->
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments :: head(~{::title})">
     <meta charset="UTF-8">
-    <title>Register Page</title>
+    <title th:text="#{register.page.title}">Register Page</title>
 </head>
 <body>
+<h1 th:text="#{welcome2}">Todo sahifasiga xush kelibsiz. Iltimos, royxatdan oting</h1>
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 offset-2 mt-5">
-            <h1 class="text-center">Register Page</h1>
-            <form method="post"  action="/auth/register" enctype="multipart/form-data">
-                <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
+            <h1 class="text-center" th:text="#{register.page.header}">Register Page</h1>
+            <form method="post" th:action="@{/auth/register}" enctype="multipart/form-data">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
+                    <label for="username" class="form-label" th:text="#{label.username}">Foydalanuvchi nomi</label>
                     <input type="text" class="form-control" id="username" name="username">
                 </div>
+
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label" th:text="#{label.password}">Parol</label>
                     <input type="password" class="form-control" id="password" name="password">
                 </div>
+
                 <div class="mb-3">
-                    <input type="file" name="photo"/>
+                    <label for="photo" class="form-label" th:text="#{label.profile.photo}">Profil rasmi</label>
+                    <input type="file" class="form-control" id="photo" name="photo">
                 </div>
-                <button type="submit" class="btn btn-primary">Register</button>
-                <a href="/auth/login">Login</a>
+
+                <button type="submit" class="btn btn-primary" th:text="#{button.register}">Ro‘yxatdan o‘tish</button>
+                <a href="/auth/login" th:text="#{button.login}">Kirish</a>
             </form>
         </div>
     </div>
 </div>
+
 <section th:replace="fragments :: js_links"></section>
-<h1 th:text="${#messages.msg('Welcome','USER')}"></h1>
 </body>
 </html>

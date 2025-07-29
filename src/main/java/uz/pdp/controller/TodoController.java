@@ -1,9 +1,11 @@
 package uz.pdp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import uz.pdp.config.security.CustomUserDetails;
 import uz.pdp.config.security.SessionUser;
 import uz.pdp.daos.TodoDao;
 import uz.pdp.dto.todo.TodoCreateDto;
@@ -22,6 +24,12 @@ public class TodoController {
         this.todoDao = todoDao;
         this.todoService = todoService;
         this.sessionUser = sessionUser;
+    }
+
+    @GetMapping("/todo")
+    public String todoPage(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        model.addAttribute("user", userDetails.getAuthUser());
+        return "todo"; // yoki boshqa html nomi
     }
 
 

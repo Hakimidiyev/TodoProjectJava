@@ -1,5 +1,6 @@
 package uz.pdp.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.daos.AuthUserDao;
@@ -14,6 +15,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UploadService uploadService;
 
+    @Autowired
     public AuthService(AuthUserDao authUserDao, PasswordEncoder passwordEncoder, UploadService uploadService) {
         this.authUserDao = authUserDao;
         this.passwordEncoder = passwordEncoder;
@@ -29,22 +31,19 @@ public class AuthService {
     }
 
 
-    public String register(UserRegisterDto dto) {
+    public void register(UserRegisterDto dto) {
         Long imageId = null;
         if (dto.photo() != null && !dto.photo().isEmpty()) {
             Uploads uploads = uploadService.uploadFile(dto.photo());
             imageId = uploads.getId();
         }
-
         AuthUser user = AuthUser.builder()
                 .username(dto.username())
                 .password(passwordEncoder.encode(dto.password()))
                 .userImageId(imageId)
                 .build();
 
-        Long id = authUserDao.save(user);
-        System.out.println(id);
-        return String.valueOf(id);
+        authUserDao.save(user);
     }
 
 }

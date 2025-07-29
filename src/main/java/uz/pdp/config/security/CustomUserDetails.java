@@ -19,7 +19,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public AuthUser getAuthUser() {          // <--- SHU GETTERNI QO‘SHING
-        return authUser;
+        return this.authUser;
     }
 
     @Override

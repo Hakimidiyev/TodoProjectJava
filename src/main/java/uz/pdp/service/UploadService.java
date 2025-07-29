@@ -16,7 +16,7 @@ public class UploadService {
         this.uploadsDao = uploadsDao;
     }
 
-    public Uploads uploadFile(MultipartFile file){
+    public Uploads uploadFile(MultipartFile file) {
         Uploads uploads = Uploads.builder()
                 .originalName(file.getOriginalFilename())
                 .generatedName(UUID.randomUUID() + "." + StringUtils.getFilenameExtension(file.getOriginalFilename()))
@@ -24,7 +24,6 @@ public class UploadService {
                 .mimeType(file.getContentType())
                 .path("/upload/")
                 .build();
-        uploadsDao.save(uploads);
-        return uploads;
+        return uploadsDao.save(uploads);
     }
 }

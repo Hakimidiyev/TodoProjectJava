@@ -25,9 +25,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
-
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Configuration
 @ComponentScan("uz.pdp")
@@ -59,6 +57,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     public SpringTemplateEngine templateEngine(){
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
+        templateEngine.setMessageSource(messageSource());
         templateEngine.addDialect(new SpringSecurityDialect());
         return templateEngine;
     }
@@ -92,6 +91,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Bean
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate(){
         return new NamedParameterJdbcTemplate(dataSource());
+    }
+
+    @Bean
+    public MultipartResolver multipartResolver(){
+        return new StandardServletMultipartResolver();
     }
 
     @Bean

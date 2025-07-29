@@ -21,7 +21,7 @@ import java.nio.file.StandardCopyOption;
 @Controller
 public class UploadController {
 
-    private final Path rootPath= Path.of("/home/hakim/Desktop/files/upload");
+    private final Path rootPath = Path.of("/home/hakim/Desktop/files/upload");
     private final UploadsDao uploadsDao;
     private final UploadService uploadService;
 
@@ -31,21 +31,23 @@ public class UploadController {
     }
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file)throws IOException {
+    public String uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         Uploads uploads = uploadService.uploadFile(file);
-        Files.copy(file.getInputStream(),rootPath.resolve(uploads.getGeneratedName()), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(file.getInputStream(), rootPath.resolve(uploads.getGeneratedName()), StandardCopyOption.REPLACE_EXISTING);
         return "redirect:/upload";
     }
 
-    @GetMapping("/download{file:.+}")
-    public ResponseEntity<FileSystemResource> downloadFile(@PathVariable String filename){
-        Uploads uploads=uploadsDao.findByGenerateName(filename);
-        FileSystemResource fileSystemResource=new FileSystemResource(rootPath.resolve(filename));
+    @GetMapping("/download/{id}")
+    public ResponseEntity<FileSystemResource> downloadFileById(@PathVariable Long id) {
+        Uploads uploads = uploadsDao.findById(id);
+        if (uploads == null) {
+            return ResponseEntity.notFound().build();
+        }
+        FileSystemResource resource = new FileSystemResource(rootPath.resolve(uploads.getGeneratedName()));
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(uploads.getMimeType()))
                 .contentLength(uploads.getSize())
-                //.header(uploads.getOriginalName())
-                .body(fileSystemResource);
-
+                .body(resource);
     }
+
 }
