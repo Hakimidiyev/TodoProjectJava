@@ -29,9 +29,8 @@ public class TodoController {
     @GetMapping("/todo")
     public String todoPage(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
         model.addAttribute("user", userDetails.getAuthUser());
-        return "todo"; // yoki boshqa html nomi
+        return "todo";
     }
-
 
     @GetMapping("/list")
     public String getAllTodos(Model model) {
