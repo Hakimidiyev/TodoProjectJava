@@ -1,15 +1,18 @@
 package uz.pdp.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.config.security.CustomUserDetails;
 import uz.pdp.config.security.SessionUser;
 import uz.pdp.daos.TodoDao;
 import uz.pdp.dto.todo.TodoCreateDto;
 import uz.pdp.dto.todo.TodoUpdateDto;
+import uz.pdp.exceptions.TodoNotFoundException;
 import uz.pdp.service.TodoService;
 
 @Controller
@@ -28,14 +31,18 @@ public class TodoController {
 
     @GetMapping("/todo")
     public String todoPage(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        model.addAttribute("user", userDetails.getAuthUser());
-        return "todo";
+        if (userDetails.getAuthUser().getId()!=null) {
+            model.addAttribute("user", userDetails.getAuthUser());
+            return "todo";
+        }
+        return String.valueOf(new TodoNotFoundException("todo is null","/auth/login"));
     }
 
     @GetMapping("/list")
     public String getAllTodos(Model model) {
         Long userId = sessionUser.getId();
         model.addAttribute("list", todoDao.findAllByUserId(userId));
+        model.addAttribute("todo",new TodoCreateDto());
         return "todo";
     }
 
@@ -46,7 +53,11 @@ public class TodoController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute TodoCreateDto todo) {
+    public String add(@Valid @ModelAttribute("todo") TodoCreateDto todo, BindingResult errors,Model model) {
+        if (errors.hasErrors()){
+            model.addAttribute("list",todoDao.findAllByUserId(sessionUser.getId()));
+            return "todo";
+        }
         todoService.addTodo(todo);
         return "redirect:/todo/list";
     }

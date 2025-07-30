@@ -4,6 +4,19 @@
 <head th:replace="fragments :: head(~{::title})">
     <meta charset="UTF-8">
     <title th:text="#{register.page.title}">Register Page</title>
+    <style>
+        table{
+            border-collapse: collapse;
+        }
+        th,td{
+            border: 1px solid black ;
+            padding: 5px;
+        }
+        .error{
+            color: red;
+            font-size: 10px;
+        }
+    </style>
 </head>
 <body>
 <h1 th:text="#{welcome2}">Todo sahifasiga xush kelibsiz. Iltimos, royxatdan oting</h1>
@@ -12,24 +25,32 @@
     <div class="row">
         <div class="col-md-8 offset-2 mt-5">
             <h1 class="text-center" th:text="#{register.page.header}">Register Page</h1>
-            <form method="post" th:action="@{/auth/register}" enctype="multipart/form-data">
+            <form method="post" th:action="@{/auth/register}" enctype="multipart/form-data" th:object="${dto}">
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}">
 
                 <div class="mb-3">
                     <label for="username" class="form-label" th:text="#{label.username}">Foydalanuvchi nomi</label>
-                    <input type="text" class="form-control" id="username" name="username">
+                    <input type="text" class="form-control" id="username" name="username" th:field="*{username}">
+                    <div th:if="${#fields.hasErrors('username')}"  class="error">
+                        <span th:each="er : ${#fields.errors('username')}" th:text="#{${er}}"></span>
+                    </div>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3" >
                     <label for="password" class="form-label" th:text="#{label.password}">Parol</label>
-                    <input type="password" class="form-control" id="password" name="password">
+                    <input type="password" class="form-control" id="password" name="password" th:field="*{password}">
+                    <div th:if="${#fields.hasErrors('password')}" class="error">
+                        <span th:each="err : ${#fields.errors('password')}" th:text="#{${err}}"></span>
+                    </div>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3" >
                     <label for="photo" class="form-label" th:text="#{label.profile.photo}">Profil rasmi</label>
-                    <input type="file" class="form-control" id="photo" name="photo">
+                    <input type="file" class="form-control" id="photo" name="photo" th:field="*{photo}">
+                    <div th:if="${#fields.hasErrors('photo')}" class="error">
+                        <span th:each="err : ${#fields.errors('photo')}" th:text="${err}"></span>
+                    </div>
                 </div>
-
                 <button type="submit" class="btn btn-primary" th:text="#{button.register}">Ro‘yxatdan o‘tish</button>
                 <a href="/auth/login" th:text="#{button.login}">Kirish</a>
             </form>

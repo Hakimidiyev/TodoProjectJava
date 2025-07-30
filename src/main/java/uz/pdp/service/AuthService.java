@@ -33,16 +33,15 @@ public class AuthService {
 
     public void register(UserRegisterDto dto) {
         Long imageId = null;
-        if (dto.photo() != null && !dto.photo().isEmpty()) {
-            Uploads uploads = uploadService.uploadFile(dto.photo());
+        if (dto.getPhoto() != null && !dto.getPhoto().isEmpty()) {
+            Uploads uploads = uploadService.uploadFile(dto.getPhoto());
             imageId = uploads.getId();
         }
         AuthUser user = AuthUser.builder()
-                .username(dto.username())
-                .password(passwordEncoder.encode(dto.password()))
+                .username(dto.getUsername())
+                .password(passwordEncoder.encode(dto.getPassword()))
                 .userImageId(imageId)
                 .build();
-
         authUserDao.save(user);
     }
 

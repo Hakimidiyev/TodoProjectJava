@@ -18,7 +18,7 @@ public class CustomUserDetails implements UserDetails {
         this.authUser = authUser;
     }
 
-    public AuthUser getAuthUser() {          // <--- SHU GETTERNI QO‘SHING
+    public AuthUser getAuthUser() {
         return this.authUser;
     }
 

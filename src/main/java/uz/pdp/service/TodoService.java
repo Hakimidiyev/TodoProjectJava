@@ -6,6 +6,7 @@ import uz.pdp.daos.TodoDao;
 import uz.pdp.domains.Todo;
 import uz.pdp.dto.todo.TodoCreateDto;
 import uz.pdp.dto.todo.TodoUpdateDto;
+import uz.pdp.exceptions.TodoNotFoundException;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class TodoService {
 
     public void addTodo(TodoCreateDto dto) {
         long userId = sessionUser.getId();
-        Todo todo = new Todo(dto.title(), dto.priority(), userId);
+        Todo todo = new Todo(dto.getTitle(), dto.getPriority(), userId);
         todoDao.save(todo);
     }
 
@@ -36,7 +37,7 @@ public class TodoService {
         long todoId = dto.id();
         Todo todo = todoDao.findById(todoId);
         if (!todo.getUserId().equals(userId)) {
-            throw new IllegalArgumentException("user can not update");
+            throw new TodoNotFoundException("user can not update","todo/list");
         }
         todo.setId(dto.id());
         todo.setTitle(dto.title());
@@ -48,10 +49,10 @@ public class TodoService {
         long userId = sessionUser.getId();
         Todo todo = todoDao.findById(todoId);
         if (todo == null) {
-            throw new IllegalArgumentException("todo is null");
+            throw new TodoNotFoundException("todo is null","todo/list");
         }
         if (!todo.getUserId().equals(userId)) {
-            throw new IllegalArgumentException("user can not update");
+            throw new TodoNotFoundException("user can not update","todo/list");
         }
         todoDao.delete(todoId);
     }
