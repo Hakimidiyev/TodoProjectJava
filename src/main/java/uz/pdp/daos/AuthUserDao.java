@@ -1,6 +1,7 @@
 package uz.pdp.daos;
 
 import lombok.NonNull;
+import lombok.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

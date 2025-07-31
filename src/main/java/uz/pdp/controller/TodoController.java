@@ -33,7 +33,7 @@ public class TodoController {
     public String todoPage(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
         if (userDetails.getAuthUser().getId()!=null) {
             model.addAttribute("user", userDetails.getAuthUser());
-            return "todo";
+            return "redirect:/todo/list";
         }
         return String.valueOf(new TodoNotFoundException("todo is null","/auth/login"));
     }
