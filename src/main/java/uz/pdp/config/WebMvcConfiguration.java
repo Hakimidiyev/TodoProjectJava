@@ -75,7 +75,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/css/*")
                 .addResourceLocations("classpath:/static/css/");
         registry.addResourceHandler("/js/*").addResourceLocations("classpath:/static/js/");
-        registry.addResourceHandler("/static/*").addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
     }
     @Bean
     public DriverManagerDataSource dataSource(){
