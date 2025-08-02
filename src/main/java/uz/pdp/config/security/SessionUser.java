@@ -20,8 +20,7 @@ public class SessionUser {
 
     public Long getId(){
         if (getUser() != null) {
-            Long id = getUser().getId();
-            return id;
+            return getUser().getId();
         }else {
             return null;
         }

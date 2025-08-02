@@ -41,8 +41,8 @@ public class TodoController {
     @GetMapping("/list")
     public String getAllTodos(Model model) {
         Long userId = sessionUser.getId();
-        model.addAttribute("list", todoDao.findAllByUserId(userId));
-        model.addAttribute("todo",new TodoCreateDto());
+        model.addAttribute("todos", todoDao.findAllByUserId(userId));
+        model.addAttribute("newTodo",new TodoCreateDto());
         return "todo";
     }
 

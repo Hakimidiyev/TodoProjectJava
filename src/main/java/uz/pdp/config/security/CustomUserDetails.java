@@ -19,7 +19,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public AuthUser getAuthUser() {
-        return this.authUser;
+        return authUser;
     }
 
     @Override
