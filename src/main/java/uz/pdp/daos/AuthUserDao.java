@@ -1,28 +1,24 @@
 package uz.pdp.daos;
 
 import lombok.NonNull;
-import lombok.Value;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Component;
 import uz.pdp.config.security.SessionUser;
 import uz.pdp.domains.AuthUser;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Optional;
 
 @Component
 public class AuthUserDao {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final SessionUser sessionUser;
+    private final AuthRoleDao authRoleDao;
 
-    public AuthUserDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate, SessionUser sessionUser) {
+    public AuthUserDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate, SessionUser sessionUser, AuthRoleDao authRoleDao) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.sessionUser = sessionUser;
+        this.authRoleDao = authRoleDao;
     }
 
     public Long save(@NonNull AuthUser authUser) {
@@ -43,6 +39,8 @@ public class AuthUserDao {
                     .id(rs.getLong("id"))
                     .username(rs.getString("username"))
                     .password(rs.getString("password"))
+                    .userImageId(rs.getLong("user_image_id"))
+                    .roles(authRoleDao.findAllByUserId(rs.getLong("id")))
                     .build());
             return Optional.of(authUser);
         } catch (Exception e) {

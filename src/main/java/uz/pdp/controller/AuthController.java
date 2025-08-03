@@ -13,6 +13,7 @@ import uz.pdp.daos.AuthUserDao;
 import uz.pdp.dto.UserRegisterDto;
 import uz.pdp.service.AuthService;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -50,7 +51,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@Valid @ModelAttribute("dto") UserRegisterDto dto, BindingResult errors){
+    public String register(@Valid @ModelAttribute("dto") UserRegisterDto dto, BindingResult errors) throws IOException {
         if (errors.hasErrors()){
             return "auth/register";
         }

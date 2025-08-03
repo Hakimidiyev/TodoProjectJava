@@ -21,8 +21,6 @@ public class AuthenticationUserInfoController {
 
     @GetMapping("/create/blog")
     public String createBlog(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        //System.out.println(userDetails.getAuthorities());   bu 2 chi usuli
-        //System.out.println(userDetails.getAuthUser().getId());  bu ham
         AuthUser user = sessionUser.getUser();
         System.out.println(user.getId());
         return "Authenticated User info";

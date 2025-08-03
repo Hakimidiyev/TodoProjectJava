@@ -7,10 +7,14 @@ import uz.pdp.daos.AuthUserDao;
 import uz.pdp.domains.AuthUser;
 import uz.pdp.domains.Uploads;
 import uz.pdp.dto.UserRegisterDto;
+import java.io.IOException;
+import java.nio.file.Path;
 
 
 @Service
 public class AuthService {
+    private final Path rootPath = Path.of("/home/hakim/Desktop/files/upload");
+
     private final AuthUserDao authUserDao;
     private final PasswordEncoder passwordEncoder;
     private final UploadService uploadService;
@@ -31,7 +35,7 @@ public class AuthService {
     }
 
 
-    public void register(UserRegisterDto dto) {
+    public void register(UserRegisterDto dto) throws IOException {
         Long imageId = null;
         if (dto.getPhoto() != null && !dto.getPhoto().isEmpty()) {
             Uploads uploads = uploadService.uploadFile(dto.getPhoto());
@@ -44,5 +48,6 @@ public class AuthService {
                 .build();
         authUserDao.save(user);
     }
+
 
 }

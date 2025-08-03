@@ -11,7 +11,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({TodoNotFoundException.class})
     public ModelAndView error_404(HttpServletRequest request,TodoNotFoundException e){
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("error_404");
+        modelAndView.setViewName("error/404");
         modelAndView.addObject("message",e.getMessage());
         modelAndView.addObject("path",request.getRequestURI());
         modelAndView.addObject("back_path",e.getPath());

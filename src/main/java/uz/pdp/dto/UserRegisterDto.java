@@ -15,5 +15,6 @@ public class UserRegisterDto{
     private String username;
     @NotBlank(message = "password.null")
     private String password;
+    @NotBlank(message = "image can not be blank")
     private MultipartFile photo;
 }

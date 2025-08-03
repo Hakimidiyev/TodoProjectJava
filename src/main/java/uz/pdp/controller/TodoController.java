@@ -51,16 +51,17 @@ public class TodoController {
        todoService.updateTodo(todo);
         return "redirect:/todo/list";
     }
-
     @PostMapping("/add")
-    public String add(@Valid @ModelAttribute("todo") TodoCreateDto todo, BindingResult errors,Model model) {
-        if (errors.hasErrors()){
-            model.addAttribute("list",todoDao.findAllByUserId(sessionUser.getId()));
+    public String add(@Valid @ModelAttribute("newTodo") TodoCreateDto newTodo, BindingResult errors, Model model) {
+        if (errors.hasErrors()) {
+            model.addAttribute("todos", todoDao.findAllByUserId(sessionUser.getId()));
+            model.addAttribute("newTodo", newTodo);
             return "todo";
         }
-        todoService.addTodo(todo);
+        todoService.addTodo(newTodo);
         return "redirect:/todo/list";
     }
+
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {

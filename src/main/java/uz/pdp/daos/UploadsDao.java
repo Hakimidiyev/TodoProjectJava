@@ -34,15 +34,12 @@ public class UploadsDao {
                     returning *
                 """;
         var paramSource = new BeanPropertySqlParameterSource(uploads);
-
         return template.queryForObject(
                 sql,
                 paramSource,
-                new BeanPropertyRowMapper<>(Uploads.class)  // <-- bu MUHIM!
+                new BeanPropertyRowMapper<>(Uploads.class)
         );
     }
-
-
 
     public Uploads findByGenerateName(String filename) {
         String sql = "select * from uploads where generatedName=:generatedName";
@@ -56,6 +53,4 @@ public class UploadsDao {
         var paramSource = new MapSqlParameterSource("id", id);
         return template.queryForObject(sql, paramSource, BeanPropertyRowMapper.newInstance(Uploads.class));
     }
-
-
 }

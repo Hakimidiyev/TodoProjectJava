@@ -2,6 +2,8 @@ package uz.pdp.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,7 +20,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 )
 public class SecurityConfigurer {
 
-    public static final String[] WHITE_LIST = {"/css/**","/auth/login","/todo","/auth/register"};
+    public static final String[] WHITE_LIST = {"/css/**","/auth/login","/todo","/auth/login?error",
+            "/auth/login?logout","/auth/register"};
     private final CustomUserDetailsService userDetailsService;
     private final CustomAuthenticationFailureHandler authenticationFailureHandler;
 
@@ -27,19 +30,29 @@ public class SecurityConfigurer {
         this.authenticationFailureHandler = authenticationFailureHandler;
     }
 
+
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+        authBuilder
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+        return authBuilder.build();
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests()
                 .requestMatchers(WHITE_LIST).permitAll()
                 .requestMatchers("/download/**").permitAll()
-                .requestMatchers("/admin").hasRole("ADMIN")
-                .requestMatchers("/user").hasAnyRole("USER","ADMIN")
                 .anyRequest()
                 .fullyAuthenticated();
 
         http.formLogin()
                 .loginPage("/auth/login")
+                .loginProcessingUrl("/auth/login")
                 .usernameParameter("uname")
                 .passwordParameter("pswd")
                 .defaultSuccessUrl("/todo/list", true)
@@ -63,15 +76,7 @@ public class SecurityConfigurer {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-       // return NoOpPasswordEncoder.getInstance();   // do not use depreceted class
         return new BCryptPasswordEncoder();
     }
 
-/*
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails admin = User.withDefaultPasswordEncoder().username("hakim").password("123").roles("ADMIN").build();
-        UserDetails user = User.withDefaultPasswordEncoder().username("jl").password("123").roles("USER").build();
-        return new InMemoryUserDetailsManager(user, admin);
-    }*/
 }

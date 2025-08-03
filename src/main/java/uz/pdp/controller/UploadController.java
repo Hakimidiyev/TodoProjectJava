@@ -29,13 +29,13 @@ public class UploadController {
         this.uploadsDao = uploadsDao;
         this.uploadService = uploadService;
     }
-
+/*
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         Uploads uploads = uploadService.uploadFile(file);
         Files.copy(file.getInputStream(), rootPath.resolve(uploads.getGeneratedName()), StandardCopyOption.REPLACE_EXISTING);
         return "redirect:/upload";
-    }
+    }*/
 
     @GetMapping("/download/{id}")
     public ResponseEntity<FileSystemResource> downloadFileById(@PathVariable Long id) {
