@@ -11,9 +11,9 @@ import lombok.*;
 @ToString
 @Builder
 public class TodoCreateDto {
-    @NotBlank(message = "{title.null}")
+    @NotBlank(message = "title.null")
     private String title;
-    @NotNull(message = "{priority.null}")
+    @NotNull(message = "priority.null")
     private Integer priority;
 
 }

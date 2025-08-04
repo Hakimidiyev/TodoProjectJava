@@ -1,0 +1,17 @@
+html, body {
+    background-color: #00aaff !important;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.error {
+    color: red;
+    font-size: 10px;
+}

@@ -1,9 +1,10 @@
 <!--/* @thymesVar id="authUser" type="uz.pdp.config.security.CustomUserDetails" */-->
 <!DOCTYPE html>
 <html th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: head(~{::title})">
+<head th:replace="fragments :: head(~{::title},~{::link})">
     <meta charset="UTF-8">
     <title th:text="#{register.page.title}">Register Page</title>
+    <link rel="stylesheet" href="/css/todo.css" />
     <style>
         table{
             border-collapse: collapse;
