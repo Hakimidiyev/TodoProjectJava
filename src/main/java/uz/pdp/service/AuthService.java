@@ -48,6 +48,4 @@ public class AuthService {
                 .build();
         authUserDao.save(user);
     }
-
-
 }

@@ -15,6 +15,5 @@ public class AuthRole {
     private Long id;
     private String name;
     private String code;
-
     private List<AuthPermission>permissions;
 }
